@@ -26,16 +26,19 @@ struct WINDOWS_BITMAP_INFO_HEADER {
 
 // void write_bmp_file(void);
 void write_bmp_header(void);
-void write_info_header(void);
+void write_dib_info_header(void);
 void write_color_data(void);
 
 int main(void) {
   write_bmp_header();
-  write_info_header();
+  write_dib_info_header();
   write_color_data();
   return 0;
 }
-
+/***
+ * Write the bmp header
+ * a bmp header is 14 bytes long
+ */
 void write_bmp_header(void) {
   std::cout << "Writing bmp header to the file" << std::endl;
 
@@ -72,7 +75,7 @@ void write_bmp_header(void) {
   bmp_file.close();
 }
 
-void write_info_header(void) {
+void write_dib_info_header(void) {
   std::cout << "Writing info header to the file" << std::endl;
   std::ofstream bmp_file;
   bmp_file.open("demo.bmp", std::ios::app | std::ios::binary);
