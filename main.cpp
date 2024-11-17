@@ -55,8 +55,11 @@ void write_bmp_header(void) {
                    sizeof(bmp_file_header.magic1)); // B
     bmp_file.write((char *)&bmp_file_header.magic2,
                    sizeof(bmp_file_header.magic2)); // M
-    bmp_file.write((char *)&bmp_file_header.bmp_file_size,
-                   sizeof(bmp_file_header.bmp_file_size)); // total file size
+    bmp_file.write(
+        (char *)&bmp_file_header.bmp_file_size,
+        sizeof(bmp_file_header
+                   .bmp_file_size)); // total file size, bmp header 14 bytes,
+                                     // dib header 40 bytes and 16 bytes data
     bmp_file.write((char *)&bmp_file_header.reserved1,
                    sizeof(bmp_file_header.reserved1)); // reserverd, should be 0
     bmp_file.write((char *)&bmp_file_header.reserved2,
