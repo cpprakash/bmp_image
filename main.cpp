@@ -43,7 +43,7 @@ void write_bmp_header(void) {
   std::cout << "Writing bmp header to the file" << std::endl;
 
   BMP_FILE_HEADER bmp_file_header;
-  bmp_file_header.bmp_file_size = 70; // total file size
+  bmp_file_header.bmp_file_size = 54; // total file size
   bmp_file_header.reserved1 = 0;
   bmp_file_header.reserved2 = 0;
   bmp_file_header.starting_address = 54;
@@ -60,9 +60,8 @@ void write_bmp_header(void) {
                    sizeof(bmp_file_header.magic2)); // M
     bmp_file.write(
         (char *)&bmp_file_header.bmp_file_size,
-        sizeof(bmp_file_header
-                   .bmp_file_size)); // total file size, bmp header 14 bytes,
-                                     // dib header 40 bytes and 16 bytes data
+        sizeof(bmp_file_header.bmp_file_size)); // total file size, bmp header
+                                                // 14 bytes, dib header 40 bytes
     bmp_file.write((char *)&bmp_file_header.reserved1,
                    sizeof(bmp_file_header.reserved1)); // reserverd, should be 0
     bmp_file.write((char *)&bmp_file_header.reserved2,
@@ -75,6 +74,10 @@ void write_bmp_header(void) {
   bmp_file.close();
 }
 
+/***
+ * the dib info header
+ * the size of this header is 40 bytes
+ */
 void write_dib_info_header(void) {
   std::cout << "Writing info header to the file" << std::endl;
   std::ofstream bmp_file;
