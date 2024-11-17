@@ -30,8 +30,8 @@ struct WINDOWS_BITMAP_INFO_HEADER {
   uint32_t bitmap_width_in_pixel;
   uint32_t bitmap_height_in_pixel;
   const uint16_t number_of_color_panes = 1;
-  const uint16_t number_of_bits_per_pixel = 4;
-  const uint32_t compression_method;
+  const uint16_t number_of_bits_per_pixel = 24;
+  const uint32_t compression_method = 0;
   uint32_t image_size;
   uint32_t horizontal_resolution_of_image;
   uint32_t vertical_resolution_of_image;
@@ -59,9 +59,12 @@ int main(void) {
  */
 void write_bmp_header(void) {
   std::cout << "Writing bmp header to the file" << std::endl;
-
+  std::cout << "SIze = " << 54 + (IMG_WIDTH * 3 + pixel_padding) * IMG_HEIGHT
+            << std::endl;
   BMP_FILE_HEADER bmp_file_header;
-  bmp_file_header.bmp_file_size = 54; // total file size
+  bmp_file_header.bmp_file_size =
+      14 + 40 + (IMG_WIDTH * 3 + pixel_padding) * IMG_HEIGHT;
+  // 54; // total file size
   bmp_file_header.reserved1 = 0;
   bmp_file_header.reserved2 = 0;
   bmp_file_header.starting_address = 54;
@@ -97,13 +100,60 @@ void write_bmp_header(void) {
  * the size of this header is 40 bytes
  */
 void write_dib_info_header(void) {
-  std::cout << "Writing info header to the file" << std::endl;
+  std::cout << "Writing dib info header to the file" << std::endl;
   std::ofstream bmp_file;
   bmp_file.open("demo.bmp", std::ios::app | std::ios::binary);
+  WINDOWS_BITMAP_INFO_HEADER dib_info_header;
   if (!bmp_file.is_open()) {
     std::cout << "File could not be opened" << std::endl;
+    return;
   } else {
-    std::cout << "File is opened" << std::endl;
+    /*
+const uint32_t header_size = 40;
+  uint32_t bitmap_width_in_pixel;
+  uint32_t bitmap_height_in_pixel;
+  const uint16_t number_of_color_panes = 1;
+  const uint16_t number_of_bits_per_pixel = 4;
+  const uint32_t compression_method;
+  uint32_t image_size;
+  uint32_t horizontal_resolution_of_image;
+  uint32_t vertical_resolution_of_image;
+  uint32_t number_of_colors_in_palette;
+  uint32_t number_of_important_colors = 0;*/
+
+    dib_info_header.bitmap_height_in_pixel = IMG_HEIGHT;
+    dib_info_header.bitmap_width_in_pixel = IMG_WIDTH;
+    dib_info_header.image_size = (IMG_WIDTH + pixel_padding) * IMG_HEIGHT;
+    dib_info_header.horizontal_resolution_of_image = 2835;
+    dib_info_header.vertical_resolution_of_image = 2835;
+    dib_info_header.number_of_colors_in_palette = 0;
+    dib_info_header.number_of_important_colors = 0;
+    std::cout << "File is opened, will write the dib info header." << std::endl;
+
+    bmp_file.write((char *)&dib_info_header.header_size,
+                   sizeof(dib_info_header.header_size));
+    bmp_file.write((char *)&dib_info_header.bitmap_width_in_pixel,
+                   sizeof(dib_info_header.bitmap_width_in_pixel));
+    bmp_file.write((char *)&dib_info_header.bitmap_height_in_pixel,
+                   sizeof(dib_info_header.bitmap_height_in_pixel));
+    bmp_file.write((char *)&dib_info_header.number_of_color_panes,
+                   sizeof(dib_info_header.number_of_color_panes));
+    bmp_file.write((char *)&dib_info_header.number_of_bits_per_pixel,
+                   sizeof(dib_info_header.number_of_bits_per_pixel));
+    bmp_file.write((char *)&dib_info_header.compression_method,
+                   sizeof(dib_info_header.compression_method));
+    bmp_file.write((char *)&dib_info_header.image_size,
+                   sizeof(dib_info_header.image_size));
+    bmp_file.write((char *)&dib_info_header.horizontal_resolution_of_image,
+                   sizeof(dib_info_header.horizontal_resolution_of_image));
+    bmp_file.write((char *)&dib_info_header.vertical_resolution_of_image,
+                   sizeof(dib_info_header.vertical_resolution_of_image));
+    bmp_file.write((char *)&dib_info_header.number_of_colors_in_palette,
+                   sizeof(dib_info_header.number_of_colors_in_palette));
+    bmp_file.write((char *)&dib_info_header.number_of_important_colors,
+                   sizeof(dib_info_header.number_of_important_colors));
+
+    bmp_file.close();
   }
 }
 
@@ -113,7 +163,8 @@ void write_color_data(void) {
   bmp_file.open("demo.bmp", std::ios::app | std::ios::binary);
   if (!bmp_file.is_open()) {
     std::cout << "File could not be opened" << std::endl;
+    return;
   } else {
-    std::cout << "File is opened" << std::endl;
+    std::cout << "File is opened, will write the color info." << std::endl;
   }
 }
