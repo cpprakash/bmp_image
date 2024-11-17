@@ -24,18 +24,42 @@ struct WINDOWS_BITMAP_INFO_HEADER {
   uint32_t number_of_important_colors = 0;
 };
 
-void write_bmp_file(void);
+// void write_bmp_file(void);
 void write_bmp_header(void);
-void write_infor_header(void);
+void write_info_header(void);
 void write_color_data(void);
 
 int main(void) {
   write_bmp_header();
+  write_info_header();
+  write_color_data();
   return 0;
 }
 
 void write_bmp_header(void) {
   std::cout << "Writing bmp header to the file" << std::endl;
+  std::ofstream bmp_file;
+  bmp_file.open("demo.bmp");
+  if (!bmp_file.is_open()) {
+    std::cout << "File could not be opened" << std::endl;
+  } else {
+    std::cout << "File is opened" << std::endl;
+  }
+}
+
+void write_info_header(void) {
+  std::cout << "Writing info header to the file" << std::endl;
+  std::ofstream bmp_file;
+  bmp_file.open("demo.bmp");
+  if (!bmp_file.is_open()) {
+    std::cout << "File could not be opened" << std::endl;
+  } else {
+    std::cout << "File is opened" << std::endl;
+  }
+}
+
+void write_color_data(void) {
+  std::cout << "Writing color data to the file" << std::endl;
   std::ofstream bmp_file;
   bmp_file.open("demo.bmp");
   if (!bmp_file.is_open()) {
