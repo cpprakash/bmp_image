@@ -1,6 +1,21 @@
 #include <fstream>
 #include <iostream>
 
+/**
+ * image of size 5*5
+ * colors =
+ * [Red Green Blue White Black
+ * Green Blue White Black Red
+ * Blue White Black Red Green
+ * White Black Red Green Blue
+ * Black Red Green Blue White]
+ *
+ */
+uint32_t IMG_WIDTH = 5;
+uint32_t IMG_HEIGHT = 5;
+
+uint32_t pixel_padding = 4 - ((IMG_WIDTH * 3) % 4);
+
 struct BMP_FILE_HEADER {
   const unsigned char magic1 = 'B';
   const unsigned char magic2 = 'M';
@@ -30,6 +45,9 @@ void write_dib_info_header(void);
 void write_color_data(void);
 
 int main(void) {
+  if (pixel_padding == 4)
+    pixel_padding = 0;
+  std::cout << "Padding = " << pixel_padding << std::endl;
   write_bmp_header();
   write_dib_info_header();
   write_color_data();
