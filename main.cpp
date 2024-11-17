@@ -1,5 +1,7 @@
+#include <array>
 #include <fstream>
 #include <iostream>
+#include <vector>
 
 /**
  * image of size 5*5
@@ -15,6 +17,16 @@ uint32_t IMG_WIDTH = 5;
 uint32_t IMG_HEIGHT = 5;
 
 uint32_t pixel_padding = 4 - ((IMG_WIDTH * 3) % 4);
+
+unsigned char padding_byte = 0b0000;
+
+std::vector<std::array<unsigned char, 3>> color_palette{
+    {255, 0, 0},     // red
+    {0, 255, 0},     // green
+    {0, 0, 255},     // blue
+    {255, 255, 255}, // white
+    {0, 0, 0}        // black
+};
 
 struct BMP_FILE_HEADER {
   const unsigned char magic1 = 'B';
@@ -47,7 +59,6 @@ void write_color_data(void);
 int main(void) {
   if (pixel_padding == 4)
     pixel_padding = 0;
-  std::cout << "Padding = " << pixel_padding << std::endl;
   write_bmp_header();
   write_dib_info_header();
   write_color_data();
@@ -59,8 +70,6 @@ int main(void) {
  */
 void write_bmp_header(void) {
   std::cout << "Writing bmp header to the file" << std::endl;
-  std::cout << "SIze = " << 54 + (IMG_WIDTH * 3 + pixel_padding) * IMG_HEIGHT
-            << std::endl;
   BMP_FILE_HEADER bmp_file_header;
   bmp_file_header.bmp_file_size =
       14 + 40 + (IMG_WIDTH * 3 + pixel_padding) * IMG_HEIGHT;
@@ -108,19 +117,6 @@ void write_dib_info_header(void) {
     std::cout << "File could not be opened" << std::endl;
     return;
   } else {
-    /*
-const uint32_t header_size = 40;
-  uint32_t bitmap_width_in_pixel;
-  uint32_t bitmap_height_in_pixel;
-  const uint16_t number_of_color_panes = 1;
-  const uint16_t number_of_bits_per_pixel = 4;
-  const uint32_t compression_method;
-  uint32_t image_size;
-  uint32_t horizontal_resolution_of_image;
-  uint32_t vertical_resolution_of_image;
-  uint32_t number_of_colors_in_palette;
-  uint32_t number_of_important_colors = 0;*/
-
     dib_info_header.bitmap_height_in_pixel = IMG_HEIGHT;
     dib_info_header.bitmap_width_in_pixel = IMG_WIDTH;
     dib_info_header.image_size = (IMG_WIDTH + pixel_padding) * IMG_HEIGHT;
@@ -166,5 +162,51 @@ void write_color_data(void) {
     return;
   } else {
     std::cout << "File is opened, will write the color info." << std::endl;
+    // first row
+    bmp_file.write((char *)&color_palette[0], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[1], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[2], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[3], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[4], sizeof(color_palette[0]));
+    // one padding
+    bmp_file.write((char *)&padding_byte, 1);
+
+    // second row
+    bmp_file.write((char *)&color_palette[0], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[1], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[2], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[3], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[4], sizeof(color_palette[0]));
+    // one padding
+    bmp_file.write((char *)&padding_byte, 1);
+
+    // third row
+    bmp_file.write((char *)&color_palette[0], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[1], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[2], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[3], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[4], sizeof(color_palette[0]));
+    // one padding
+    bmp_file.write((char *)&padding_byte, 1);
+
+    // fourth row
+    bmp_file.write((char *)&color_palette[0], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[1], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[2], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[3], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[4], sizeof(color_palette[0]));
+    // one padding
+    bmp_file.write((char *)&padding_byte, 1);
+
+    // fifth row
+    bmp_file.write((char *)&color_palette[0], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[1], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[2], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[3], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[4], sizeof(color_palette[0]));
+    // one padding
+    bmp_file.write((char *)&padding_byte, 1);
+
+    bmp_file.close();
   }
 }
