@@ -1,3 +1,4 @@
+#include <fstream>
 #include <iostream>
 
 struct BMP_FILE_HEADER {
@@ -28,4 +29,18 @@ void write_bmp_header(void);
 void write_infor_header(void);
 void write_color_data(void);
 
-int main(void) { return 0; }
+int main(void) {
+  write_bmp_header();
+  return 0;
+}
+
+void write_bmp_header(void) {
+  std::cout << "Writing bmp header to the file" << std::endl;
+  std::ofstream bmp_file;
+  bmp_file.open("demo.bmp");
+  if (!bmp_file.is_open()) {
+    std::cout << "File could not be opened" << std::endl;
+  } else {
+    std::cout << "File is opened" << std::endl;
+  }
+}
