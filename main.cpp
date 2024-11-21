@@ -179,48 +179,48 @@ void write_color_data(void) {
     return;
   } else {
     std::cout << "File is opened, will write the color info." << std::endl;
-    // first row
+    // 5th row = Red Green Blue White Black
+    bmp_file.write((char *)&color_palette[2], sizeof(color_palette[2]));
+    bmp_file.write((char *)&color_palette[3], sizeof(color_palette[3]));
+    bmp_file.write((char *)&color_palette[4], sizeof(color_palette[4]));
     bmp_file.write((char *)&color_palette[0], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[1], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[2], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[3], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[4], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[1], sizeof(color_palette[1]));
     // one padding
     bmp_file.write((char *)&padding_byte, 1);
 
-    // second row
+    // fourth row = Green Blue White Black Red
+    bmp_file.write((char *)&color_palette[3], sizeof(color_palette[3]));
+    bmp_file.write((char *)&color_palette[4], sizeof(color_palette[4]));
     bmp_file.write((char *)&color_palette[0], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[1], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[2], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[3], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[4], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[1], sizeof(color_palette[1]));
+    bmp_file.write((char *)&color_palette[2], sizeof(color_palette[2]));
     // one padding
     bmp_file.write((char *)&padding_byte, 1);
 
-    // third row
+    // third row = Blue White Black Red Green
+    bmp_file.write((char *)&color_palette[4], sizeof(color_palette[4]));
     bmp_file.write((char *)&color_palette[0], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[1], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[2], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[3], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[4], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[1], sizeof(color_palette[1]));
+    bmp_file.write((char *)&color_palette[2], sizeof(color_palette[2]));
+    bmp_file.write((char *)&color_palette[3], sizeof(color_palette[3]));
     // one padding
     bmp_file.write((char *)&padding_byte, 1);
 
-    // fourth row
+    // second row = White Black Red Green Blue
     bmp_file.write((char *)&color_palette[0], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[1], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[2], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[3], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[4], sizeof(color_palette[0]));
+    bmp_file.write((char *)&color_palette[1], sizeof(color_palette[1]));
+    bmp_file.write((char *)&color_palette[2], sizeof(color_palette[2]));
+    bmp_file.write((char *)&color_palette[3], sizeof(color_palette[3]));
+    bmp_file.write((char *)&color_palette[4], sizeof(color_palette[4]));
     // one padding
     bmp_file.write((char *)&padding_byte, 1);
 
-    // fifth row
+    // frist row = Black Red Green Blue White
+    bmp_file.write((char *)&color_palette[1], sizeof(color_palette[1]));
+    bmp_file.write((char *)&color_palette[2], sizeof(color_palette[2]));
+    bmp_file.write((char *)&color_palette[3], sizeof(color_palette[3]));
+    bmp_file.write((char *)&color_palette[4], sizeof(color_palette[4]));
     bmp_file.write((char *)&color_palette[0], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[1], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[2], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[3], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[4], sizeof(color_palette[0]));
     // one padding
     bmp_file.write((char *)&padding_byte, 1);
 
