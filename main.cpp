@@ -18,6 +18,8 @@ uint32_t IMG_HEIGHT = 5;
 
 uint32_t pixel_padding = 4 - ((IMG_WIDTH * 3) % 4);
 
+const unsigned long pixel_size = 3UL;
+
 unsigned char padding_byte = 0b0000;
 /**
  * Colors are defined in reverser order, so it is not RGB but BGR
@@ -173,56 +175,27 @@ void write_dib_info_header(void) {
 void write_color_data(void) {
   std::cout << "Writing color data to the file" << std::endl;
   std::ofstream bmp_file;
+  unsigned char bit_pattern = 0;
   bmp_file.open("demo.bmp", std::ios::app | std::ios::binary);
   if (!bmp_file.is_open()) {
     std::cout << "File could not be opened" << std::endl;
     return;
   } else {
     std::cout << "File is opened, will write the color info." << std::endl;
-    // 5th row = Red Green Blue White Black
-    bmp_file.write((char *)&color_palette[2], sizeof(color_palette[2]));
-    bmp_file.write((char *)&color_palette[3], sizeof(color_palette[3]));
-    bmp_file.write((char *)&color_palette[4], sizeof(color_palette[4]));
-    bmp_file.write((char *)&color_palette[0], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[1], sizeof(color_palette[1]));
-    // one padding
-    bmp_file.write((char *)&padding_byte, 1);
-
-    // fourth row = Green Blue White Black Red
-    bmp_file.write((char *)&color_palette[3], sizeof(color_palette[3]));
-    bmp_file.write((char *)&color_palette[4], sizeof(color_palette[4]));
-    bmp_file.write((char *)&color_palette[0], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[1], sizeof(color_palette[1]));
-    bmp_file.write((char *)&color_palette[2], sizeof(color_palette[2]));
-    // one padding
-    bmp_file.write((char *)&padding_byte, 1);
-
-    // third row = Blue White Black Red Green
-    bmp_file.write((char *)&color_palette[4], sizeof(color_palette[4]));
-    bmp_file.write((char *)&color_palette[0], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[1], sizeof(color_palette[1]));
-    bmp_file.write((char *)&color_palette[2], sizeof(color_palette[2]));
-    bmp_file.write((char *)&color_palette[3], sizeof(color_palette[3]));
-    // one padding
-    bmp_file.write((char *)&padding_byte, 1);
-
-    // second row = White Black Red Green Blue
-    bmp_file.write((char *)&color_palette[0], sizeof(color_palette[0]));
-    bmp_file.write((char *)&color_palette[1], sizeof(color_palette[1]));
-    bmp_file.write((char *)&color_palette[2], sizeof(color_palette[2]));
-    bmp_file.write((char *)&color_palette[3], sizeof(color_palette[3]));
-    bmp_file.write((char *)&color_palette[4], sizeof(color_palette[4]));
-    // one padding
-    bmp_file.write((char *)&padding_byte, 1);
-
-    // frist row = Black Red Green Blue White
-    bmp_file.write((char *)&color_palette[1], sizeof(color_palette[1]));
-    bmp_file.write((char *)&color_palette[2], sizeof(color_palette[2]));
-    bmp_file.write((char *)&color_palette[3], sizeof(color_palette[3]));
-    bmp_file.write((char *)&color_palette[4], sizeof(color_palette[4]));
-    bmp_file.write((char *)&color_palette[0], sizeof(color_palette[0]));
-    // one padding
-    bmp_file.write((char *)&padding_byte, 1);
+    for (auto i = 0; i < IMG_HEIGHT; i++) {
+      for (auto j = 0; j < 5; j++) {
+        bit_pattern++;
+        bmp_file.write((char *)&color_palette[(bit_pattern + 1) % 5],
+                       sizeof(color_palette[j]));
+      }
+      bit_pattern++; // increment it again to get the pattern
+      // add appropriate amount of padding
+      if (pixel_padding != 0) {
+        for (auto k = 0; k < pixel_padding; k++) {
+          bmp_file.write((char *)&padding_byte, 1);
+        }
+      }
+    }
 
     bmp_file.close();
   }
