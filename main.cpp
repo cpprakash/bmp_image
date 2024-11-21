@@ -1,3 +1,8 @@
+/**
+ * @license
+ * Copyright Chander Prakash.
+ */
+
 #include <array>
 #include <fstream>
 #include <iostream>
@@ -182,8 +187,8 @@ void write_color_data(void) {
     return;
   } else {
     std::cout << "File is opened, will write the color info." << std::endl;
-    for (auto i = 0; i < IMG_HEIGHT; i++) {
-      for (auto j = 0; j < 5; j++) {
+    for (uint32_t i = 0; i < IMG_HEIGHT; i++) {
+      for (uint32_t j = 0; j < IMG_WIDTH; j++) {
         bit_pattern++;
         bmp_file.write((char *)&color_palette[(bit_pattern + 1) % 5],
                        sizeof(color_palette[j]));
@@ -191,7 +196,7 @@ void write_color_data(void) {
       bit_pattern++; // increment it again to get the pattern
       // add appropriate amount of padding
       if (pixel_padding != 0) {
-        for (auto k = 0; k < pixel_padding; k++) {
+        for (uint32_t k = 0; k < pixel_padding; k++) {
           bmp_file.write((char *)&padding_byte, 1);
         }
       }
