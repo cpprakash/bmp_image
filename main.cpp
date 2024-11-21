@@ -19,13 +19,16 @@ uint32_t IMG_HEIGHT = 5;
 uint32_t pixel_padding = 4 - ((IMG_WIDTH * 3) % 4);
 
 unsigned char padding_byte = 0b0000;
+/**
+ * Colors are defined in reverser order, so it is not RGB but BGR
+ */
 
 std::vector<std::array<unsigned char, 3>> color_palette{
-    {255, 0, 0},     // red
-    {0, 255, 0},     // green
-    {0, 0, 255},     // blue
     {255, 255, 255}, // white
-    {0, 0, 0}        // black
+    {0, 0, 0},       // black
+    {0, 0, 255},     // red
+    {0, 255, 0},     // green
+    {255, 0, 0}      // blue
 };
 
 struct BMP_FILE_HEADER {
@@ -152,7 +155,21 @@ void write_dib_info_header(void) {
     bmp_file.close();
   }
 }
-
+/**
+ * image of size 5*5
+ * colors =
+ * [Red Green Blue White Black
+ * Green Blue White Black Red
+ * Blue White Black Red Green
+ * White Black Red Green Blue
+ * Black Red Green Blue White]
+ *  the colors are defined as
+ * 0 = White
+ * 1 = black
+ * 2 = Red
+ * 3 = Green
+ * 4 = Blue
+ */
 void write_color_data(void) {
   std::cout << "Writing color data to the file" << std::endl;
   std::ofstream bmp_file;
