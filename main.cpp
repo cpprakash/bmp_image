@@ -24,6 +24,7 @@ uint32_t IMG_HEIGHT = 5;
 uint32_t pixel_padding = 4 - ((IMG_WIDTH * 3) % 4);
 
 const unsigned long pixel_size = 3UL;
+uint32_t local_offset = 0;
 
 unsigned char padding_byte = 0b0000;
 /**
@@ -214,34 +215,70 @@ void write_color_data(void) {
 void read_bmp_file(void) {
   std::ifstream bmp_file_input;
   bmp_file_input.open("demo.bmp", std::ios::binary | std::ios::in);
-
   // file could not be opened or file doesnt exists
   if (!bmp_file_input) {
     std::cout << "Could not open the file." << std::endl;
     return;
   }
-
   // create a variable to hold bmp file data
   unsigned char bmp_temp[14];
   // std::cout << sizeof(unsigned short);
-
   bmp_file_input.read(reinterpret_cast<char *>(bmp_temp), sizeof(bmp_temp));
-
   // check the magic number to make sure it is BMP file
   if (bmp_temp[0] != 'B' && bmp_temp[1] != 'M') {
     std::cout << "Not a BMP file. Will Exit." << std::endl;
     return;
   }
   uint32_t file_size = *(reinterpret_cast<int *>(bmp_temp + 2));
-
   uint32_t starting_offset = *(reinterpret_cast<int *>(bmp_temp + 10));
-
   // print BMP file header
   std::cout << "Magic Number =" << bmp_temp[0] << "" << bmp_temp[1]
             << std::endl;
   std::cout << "File size =" << file_size << " bytes." << std::endl;
   std::cout << "File offset to pixel array =" << (starting_offset) << " bytes."
             << std::endl;
-
   bmp_file_input.close();
+
+  std::ifstream complete_bmp_file;
+  complete_bmp_file.open("demo.bmp", std::ios::binary | std::ios::in);
+  if (!complete_bmp_file)
+    return; // TODO handle with grace here later
+  unsigned char bmp_file_array[file_size];
+  complete_bmp_file.read(reinterpret_cast<char *>(bmp_file_array),
+                         sizeof(bmp_file_array));
+
+  /// Windows BITMAPINFOHEADER information
+  std::cout << "Size of this header ="
+            << *(reinterpret_cast<uint32_t *>(bmp_file_array + 14))
+            << std::endl;
+  std::cout << "Image width ="
+            << *(reinterpret_cast<int32_t *>(bmp_file_array + 18)) << std::endl;
+  std::cout << "Image height ="
+            << *(reinterpret_cast<int32_t *>(bmp_file_array + 22)) << std::endl;
+  std::cout << "Num of Color planes ="
+            << *(reinterpret_cast<uint16_t *>(bmp_file_array + 26))
+            << std::endl;
+  std::cout << "Num of bits per pixel ="
+            << *(reinterpret_cast<uint16_t *>(bmp_file_array + 28))
+            << std::endl;
+  std::cout << "Compression method ="
+            << *(reinterpret_cast<uint32_t *>(bmp_file_array + 30))
+            << std::endl;
+  std::cout << "Image size ="
+            << *(reinterpret_cast<uint32_t *>(bmp_file_array + 34))
+            << std::endl;
+  std::cout << "Horizntal Resolution ="
+            << *(reinterpret_cast<uint32_t *>(bmp_file_array + 38))
+            << std::endl;
+  std::cout << "Vertical Resolution ="
+            << *(reinterpret_cast<uint32_t *>(bmp_file_array + 42))
+            << std::endl;
+  std::cout << "Num of colors in color palette ="
+            << *(reinterpret_cast<uint32_t *>(bmp_file_array + 46))
+            << std::endl;
+  std::cout << "Num of imp colors used ="
+            << *(reinterpret_cast<uint32_t *>(bmp_file_array + 50))
+            << std::endl;
+
+  complete_bmp_file.close();
 }
