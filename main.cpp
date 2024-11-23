@@ -66,12 +66,17 @@ void write_bmp_header(void);
 void write_dib_info_header(void);
 void write_color_data(void);
 
+// read bml file
+void read_bmp_file(void);
+
 int main(void) {
   if (pixel_padding == 4)
     pixel_padding = 0;
-  write_bmp_header();
-  write_dib_info_header();
-  write_color_data();
+  // write_bmp_header();
+  // write_dib_info_header();
+  // write_color_data();
+
+  read_bmp_file();
   return 0;
 }
 /***
@@ -204,4 +209,39 @@ void write_color_data(void) {
 
     bmp_file.close();
   }
+}
+
+void read_bmp_file(void) {
+  std::ifstream bmp_file_input;
+  bmp_file_input.open("demo.bmp", std::ios::binary | std::ios::in);
+
+  // file could not be opened or file doesnt exists
+  if (!bmp_file_input) {
+    std::cout << "Could not open the file." << std::endl;
+    return;
+  }
+
+  // create a variable to hold bmp file data
+  unsigned char bmp_temp[14];
+  // std::cout << sizeof(unsigned short);
+
+  bmp_file_input.read(reinterpret_cast<char *>(bmp_temp), sizeof(bmp_temp));
+
+  // check the magic number to make sure it is BMP file
+  if (bmp_temp[0] != 'B' && bmp_temp[1] != 'M') {
+    std::cout << "Not a BMP file. Will Exit." << std::endl;
+    return;
+  }
+  uint32_t file_size = *(reinterpret_cast<int *>(bmp_temp + 2));
+
+  uint32_t starting_offset = *(reinterpret_cast<int *>(bmp_temp + 10));
+
+  // print BMP file header
+  std::cout << "Magic Number =" << bmp_temp[0] << "" << bmp_temp[1]
+            << std::endl;
+  std::cout << "File size =" << file_size << " bytes." << std::endl;
+  std::cout << "File offset to pixel array =" << (starting_offset) << " bytes."
+            << std::endl;
+
+  bmp_file_input.close();
 }
