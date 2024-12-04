@@ -1,1 +1,1 @@
-g++ ./main.cpp -o bmp_image && ./bmp_image
+g++ ./main.cpp Image.cpp -o bmp_image && ./bmp_image
