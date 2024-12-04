@@ -85,6 +85,7 @@ private:
   void write_color_data(void);
   void write_default_image_data(void) noexcept;
   uint32_t get_padding_for_row(void) noexcept;
+  void write_single_pixel_color_data(void) noexcept;
 };
 
 #endif

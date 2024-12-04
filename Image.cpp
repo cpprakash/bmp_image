@@ -29,6 +29,7 @@ void BmpImage::create_empty_image(const std::string &file_name) {
   this->write_bmp_header();
   this->write_dib_info_header();
   this->write_default_image_data();
+  this->write_single_pixel_color_data();
   this->write_color_data();
 }
 
@@ -147,7 +148,7 @@ void BmpImage::write_bmp_header(void) {
 void BmpImage::write_dib_info_header(void) {
   std::cout << "Writing dib info header to the file" << std::endl;
   std::ofstream bmp_file;
-  bmp_file.open("demo.bmp", std::ios::app | std::ios::binary);
+  bmp_file.open(this->image_file_name, std::ios::app | std::ios::binary);
   WINDOWS_BITMAP_INFO_HEADER dib_info_header;
   if (!bmp_file.is_open()) {
     std::cout << "File could not be opened" << std::endl;
@@ -189,16 +190,16 @@ void BmpImage::write_dib_info_header(void) {
   }
 }
 
-void write_single_pixel_color_data(
-    const std::ofstream &file, const std::string &file_name,
-    const std::vector<std::array<unsigned char, 3UL>> &color_palette,
-    const int color) {
-  std::ofstream bmp_file(file_name, std::ios_base::binary | std::ios_base::out);
+void BmpImage::write_single_pixel_color_data(void) noexcept {
+  std::ofstream bmp_file(this->image_file_name,
+                         std::ios_base::binary | std::ios_base::app);
   if (!bmp_file) {
     std::cout << "Error opening file" << std::endl;
     return;
   }
-  bmp_file.write((char *)&(color_palette[color]), sizeof(color_palette[color]));
+  bmp_file.write((char *)&(color_palette[0]), sizeof(color_palette[0]));
+  bmp_file.write((char *)&padding_byte, sizeof(padding_byte));
+  bmp_file.close();
 }
 
 /**
