@@ -4,16 +4,21 @@ BmpImage::BmpImage() {}
 
 BmpImage::BmpImage(const std::string &file_name, const uint32_t img_height,
                    const uint32_t img_widht) noexcept {
+  this->image_file_name = file_name;
   this->IMG_WIDTH = img_widht;
   this->IMG_HEIGHT = img_height;
   this->pixel_padding = this->get_padding_for_row();
-  this->write_default_image_data();
+  // this->write_default_image_data();
+  this->write_bmp_header();
+  this->write_dib_info_header();
+  this->write_color_data();
 }
 
 void BmpImage::start_reading_bmp_file(const std::string &file_name) noexcept {
+  this->image_file_name = file_name;
   if (this->pixel_padding == 4)
     this->pixel_padding = 0;
-  read_bmp_file();
+  this->read_bmp_file();
 }
 
 /**
@@ -35,10 +40,11 @@ void BmpImage::create_empty_image(const std::string &file_name) {
 
 void BmpImage::read_bmp_file(void) {
   std::ifstream bmp_file_input;
-  bmp_file_input.open("demo.bmp", std::ios::binary | std::ios::in);
+  bmp_file_input.open(this->image_file_name, std::ios::binary | std::ios::in);
   // file could not be opened or file doesnt exists
   if (!bmp_file_input) {
-    std::cout << "Could not open the file." << std::endl;
+    std::cout << "Could not open the file. " << this->image_file_name
+              << std::endl;
     return;
   }
   // create a variable to hold bmp file data
@@ -61,7 +67,8 @@ void BmpImage::read_bmp_file(void) {
   bmp_file_input.close();
 
   std::ifstream complete_bmp_file;
-  complete_bmp_file.open("demo.bmp", std::ios::binary | std::ios::in);
+  complete_bmp_file.open(this->image_file_name,
+                         std::ios::binary | std::ios::in);
   if (!complete_bmp_file)
     return; // TODO handle with grace here later
   unsigned char bmp_file_array[file_size];
@@ -222,7 +229,7 @@ void BmpImage::write_color_data(void) {
   std::cout << "Writing color data to the file" << std::endl;
   std::ofstream bmp_file;
   unsigned char bit_pattern = 0;
-  bmp_file.open("demo.bmp", std::ios::app | std::ios::binary);
+  bmp_file.open(this->image_file_name, std::ios::app | std::ios::binary);
   if (!bmp_file.is_open()) {
     std::cout << "File could not be opened" << std::endl;
     return;
