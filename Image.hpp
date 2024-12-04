@@ -74,8 +74,8 @@ private:
 public:
   BmpImage();
   BmpImage(const std::string &file_name, const uint32_t img_height,
-           const uint32_t img_widht) noexcept;
-  void start_reading_bmp_file(void);
+           const uint32_t img_width) noexcept;
+  void start_reading_bmp_file(const std::string &file_name) noexcept;
   void create_empty_image(const std::string &file_name);
 
 private:

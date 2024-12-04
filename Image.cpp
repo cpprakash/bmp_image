@@ -10,7 +10,7 @@ BmpImage::BmpImage(const std::string &file_name, const uint32_t img_height,
   this->write_default_image_data();
 }
 
-void BmpImage::start_reading_bmp_file(void) {
+void BmpImage::start_reading_bmp_file(const std::string &file_name) noexcept {
   if (this->pixel_padding == 4)
     this->pixel_padding = 0;
   read_bmp_file();
@@ -30,7 +30,7 @@ void BmpImage::create_empty_image(const std::string &file_name) {
   this->write_dib_info_header();
   this->write_default_image_data();
   this->write_single_pixel_color_data();
-  this->write_color_data();
+  // this->write_color_data();
 }
 
 void BmpImage::read_bmp_file(void) {
