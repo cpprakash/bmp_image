@@ -61,7 +61,7 @@ void handle_choice_one(void) {
   std::string file_name;
   std::cin >> file_name;
   BmpImage img;
-  file_name += file_name + ".bmp";
+  file_name += ".bmp";
   img.create_empty_image(file_name);
 }
 
