@@ -7,9 +7,10 @@
 
 #include "Image.hpp"
 
-void handle_choice_one(void);   // Create a 1x1 BMP image file
-void handle_choice_two(void);   // Read a BMP image file
-void handle_choice_three(void); // Create a wXy BMP image file
+void handle_choice_one(void) noexcept;   // Create a 1x1 BMP image file
+void handle_choice_two(void) noexcept;   // Read a BMP image file
+void handle_choice_three(void) noexcept; // Create a wXy BMP image file
+void handle_choice_four(void) noexcept;  // Create chess pattern
 
 /**
  * Creates a menu so that the user can select the option
@@ -23,7 +24,8 @@ void create_menu(void) {
   std::cout << "1. Create a 1x1 BMP image file." << std::endl;
   std::cout << "2. Read a BMP image file" << std::endl;
   std::cout << "3. Create a wXy BMP image file." << std::endl;
-  std::cout << "4. Exit the program." << std::endl;
+  std::cout << "4. Create a wXy BMP image file." << std::endl;
+  std::cout << "5. Exit the program." << std::endl;
   uint32_t choice;
   std::cin >> choice;
   std::cout << "You have entered " << choice << std::endl;
@@ -40,6 +42,9 @@ void create_menu(void) {
     handle_choice_three();
     break;
   case 4: {
+    handle_choice_four();
+  } break;
+  case 5: {
     std::cout << "Exiting the program. Thankyou for using it." << std::endl;
     exit(0);
   } break;
@@ -55,7 +60,7 @@ int main(void) {
   return 0;
 }
 
-void handle_choice_one(void) {
+void handle_choice_one(void) noexcept {
   std::cout << "Please enter the file name to create without extension."
             << std::endl;
   std::string file_name;
@@ -65,7 +70,7 @@ void handle_choice_one(void) {
   img.create_empty_image(file_name);
 }
 
-void handle_choice_two(void) {
+void handle_choice_two(void) noexcept {
   std::cout << "Please enter a file name to read" << std::endl;
   std::string file_name;
   std::cin >> file_name;
@@ -73,7 +78,7 @@ void handle_choice_two(void) {
   img.start_reading_bmp_file(file_name + ".bmp");
 }
 
-void handle_choice_three(void) {
+void handle_choice_three(void) noexcept {
   std::cout << "Please enter a file name to create" << std::endl;
   std::string file_name;
   std::cin >> file_name;
@@ -86,3 +91,5 @@ void handle_choice_three(void) {
   file_name += file_name + ".bmp";
   BmpImage img(file_name, height, width);
 }
+
+void handle_choice_four(void) noexcept {}
