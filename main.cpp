@@ -92,4 +92,22 @@ void handle_choice_three(void) noexcept {
   BmpImage img(file_name, height, width);
 }
 
-void handle_choice_four(void) noexcept {}
+void handle_choice_four(void) noexcept {
+  std::cout << "Please enter a file name to create" << std::endl;
+  std::string file_name;
+  std::cin >> file_name;
+  std::cout << "Please enter a height of image" << std::endl;
+  uint32_t height;
+  std::cin >> height;
+  std::cout << "Please enter a width of image" << std::endl;
+  uint32_t width;
+  std::cin >> width;
+  file_name += ".bmp";
+  uint32_t box_size;
+  std::cout << "Please enter box size (multiple of 8)" << std::endl;
+  std::cin >> box_size;
+  BmpImage img;
+  // TODO, fix me with proper values, for now we just make it fixed size
+  // without user input,
+  img.create_chess_pattern(file_name, height = 8, width = 8, box_size = 1);
+}

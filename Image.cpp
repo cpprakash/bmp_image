@@ -3,15 +3,34 @@
 BmpImage::BmpImage() {}
 
 BmpImage::BmpImage(const std::string &file_name, const uint32_t img_height,
-                   const uint32_t img_widht) noexcept {
-  this->image_file_name = file_name;
-  this->IMG_WIDTH = img_widht;
-  this->IMG_HEIGHT = img_height;
-  this->pixel_padding = this->get_padding_for_row();
+                   const uint32_t img_width) noexcept {
+  this->setup_initial_values(file_name, img_height, img_width);
   // this->write_default_image_data();
   this->write_bmp_header();
   this->write_dib_info_header();
   this->write_color_data();
+}
+
+void BmpImage::create_chess_pattern(const std::string &file_name,
+                                    const uint32_t &img_height,
+                                    const uint32_t &img_width,
+                                    const uint32_t &box_size) noexcept {
+  this->setup_initial_values(file_name, img_height, img_width);
+  this->box_size = box_size;
+  this->write_bmp_header();
+  this->write_dib_info_header();
+  this->write_chess_pattern_data();
+}
+
+void BmpImage::write_chess_pattern_data(void) noexcept {}
+
+void BmpImage::setup_initial_values(const std::string &file_name,
+                                    const uint32_t &img_height,
+                                    const uint32_t &img_width) noexcept {
+  this->image_file_name = file_name;
+  this->IMG_WIDTH = img_width;
+  this->IMG_HEIGHT = img_height;
+  this->pixel_padding = this->get_padding_for_row();
 }
 
 void BmpImage::start_reading_bmp_file(const std::string &file_name) noexcept {

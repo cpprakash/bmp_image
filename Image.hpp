@@ -25,6 +25,7 @@ public:
   unsigned char padding_byte = 0b0000;
 
 private:
+  uint32_t box_size;
   std::string image_file_name;
   uint32_t pixel_padding = 4 - ((IMG_WIDTH * 3) % 4);
   /**
@@ -77,6 +78,10 @@ public:
            const uint32_t img_width) noexcept;
   void start_reading_bmp_file(const std::string &file_name) noexcept;
   void create_empty_image(const std::string &file_name);
+  void create_chess_pattern(const std::string &file_name,
+                            const uint32_t &img_height,
+                            const uint32_t &img_width,
+                            const uint32_t &box_size) noexcept;
 
 private:
   void read_bmp_file(void);
@@ -86,6 +91,10 @@ private:
   void write_default_image_data(void) noexcept;
   uint32_t get_padding_for_row(void) noexcept;
   void write_single_pixel_color_data(void) noexcept;
+  void write_chess_pattern_data(void) noexcept;
+  void setup_initial_values(const std::string &file_name,
+                            const uint32_t &img_height,
+                            const uint32_t &img_width) noexcept;
 };
 
 #endif
