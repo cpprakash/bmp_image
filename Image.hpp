@@ -40,6 +40,14 @@ private:
       {255, 0, 0}      // blue
   };
 
+  /**
+   * chess pattern TODO fix it later
+   */
+  std::vector<std::array<unsigned char, 3UL>> chess_color_palette{
+      {255, 255, 255}, // white
+      {0, 0, 0}        // black
+  };
+
   std::vector<unsigned char> pixel_data;
 
   /**

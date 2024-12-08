@@ -24,7 +24,7 @@ void create_menu(void) {
   std::cout << "1. Create a 1x1 BMP image file." << std::endl;
   std::cout << "2. Read a BMP image file" << std::endl;
   std::cout << "3. Create a wXy BMP image file." << std::endl;
-  std::cout << "4. Create a wXy BMP image file." << std::endl;
+  std::cout << "4. Create a chess pattern." << std::endl;
   std::cout << "5. Exit the program." << std::endl;
   uint32_t choice;
   std::cin >> choice;

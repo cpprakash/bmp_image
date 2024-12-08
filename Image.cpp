@@ -22,7 +22,7 @@ void BmpImage::create_chess_pattern(const std::string &file_name,
   this->write_chess_pattern_data();
 }
 
-void BmpImage::write_chess_pattern_data(void) noexcept {}
+// void BmpImage::write_chess_pattern_data(void) noexcept {}
 
 void BmpImage::setup_initial_values(const std::string &file_name,
                                     const uint32_t &img_height,
@@ -59,7 +59,8 @@ void BmpImage::create_empty_image(const std::string &file_name) {
 
 void BmpImage::read_bmp_file(void) {
   std::ifstream bmp_file_input;
-  bmp_file_input.open(this->image_file_name, std::ios::binary | std::ios::in);
+  bmp_file_input.open("tests/" + this->image_file_name,
+                      std::ios::binary | std::ios::in);
   // file could not be opened or file doesnt exists
   if (!bmp_file_input) {
     std::cout << "Could not open the file. " << this->image_file_name
@@ -86,7 +87,7 @@ void BmpImage::read_bmp_file(void) {
   bmp_file_input.close();
 
   std::ifstream complete_bmp_file;
-  complete_bmp_file.open(this->image_file_name,
+  complete_bmp_file.open("tests/" + this->image_file_name,
                          std::ios::binary | std::ios::in);
   if (!complete_bmp_file)
     return; // TODO handle with grace here later
@@ -143,7 +144,8 @@ void BmpImage::write_bmp_header(void) {
   bmp_file_header.starting_address = 54;
 
   std::ofstream bmp_file;
-  bmp_file.open(this->image_file_name, std::ios::binary | std::ios::out);
+  bmp_file.open("tests/" + this->image_file_name,
+                std::ios::binary | std::ios::out);
   if (!bmp_file.is_open()) {
     std::cout << "File could not be opened" << std::endl;
   } else {
@@ -174,7 +176,8 @@ void BmpImage::write_bmp_header(void) {
 void BmpImage::write_dib_info_header(void) {
   std::cout << "Writing dib info header to the file" << std::endl;
   std::ofstream bmp_file;
-  bmp_file.open(this->image_file_name, std::ios::app | std::ios::binary);
+  bmp_file.open("tests/" + this->image_file_name,
+                std::ios::app | std::ios::binary);
   WINDOWS_BITMAP_INFO_HEADER dib_info_header;
   if (!bmp_file.is_open()) {
     std::cout << "File could not be opened" << std::endl;
@@ -228,6 +231,51 @@ void BmpImage::write_single_pixel_color_data(void) noexcept {
   bmp_file.close();
 }
 
+/** TODO, implement a clear function
+ * Overloaded version of the write_Color_data
+ * this overloaded function expects color as well
+ */
+void BmpImage::write_chess_pattern_data(void) noexcept {
+  std::cout << "write_chess_pattern_data::Writing color data for chess pattern "
+               "to the file"
+            << std::endl;
+  std::ofstream bmp_file;
+  bmp_file.open("tests/" + this->image_file_name,
+                std::ios::app | std::ios::binary);
+  if (!bmp_file.is_open()) {
+    std::cout << "write_chess_pattern_data::File could not be opened"
+              << std::endl;
+    return;
+  } else {
+    std::cout << "write_chess_pattern_data::File is opened, will write the "
+                 "color info."
+              << std::endl;
+    for (uint32_t i = 0; i < IMG_HEIGHT; i++) {
+      for (uint32_t j = 0; j < IMG_WIDTH; j++) {
+        pixel_data.push_back(chess_color_palette[0][0]);
+
+        pixel_data.push_back(chess_color_palette[0][1]);
+
+        pixel_data.push_back(chess_color_palette[0][2]);
+        // bmp_file.write((char *)&color_palette[(bit_pattern + 1) % 5],
+        //              sizeof(color_palette[j]));
+      }
+      // add appropriate amount of padding
+      if (pixel_padding != 0) {
+        for (uint32_t k = 0; k < pixel_padding; k++) {
+
+          pixel_data.push_back(padding_byte);
+          // bmp_file.write((char *)&padding_byte, 1);
+        }
+      }
+    }
+
+    bmp_file.write((char *)(&pixel_data), sizeof(pixel_data));
+
+    bmp_file.close();
+  }
+}
+
 /**
  * image of size 5*5
  * colors =
@@ -248,7 +296,8 @@ void BmpImage::write_color_data(void) {
   std::cout << "Writing color data to the file" << std::endl;
   std::ofstream bmp_file;
   unsigned char bit_pattern = 0;
-  bmp_file.open(this->image_file_name, std::ios::app | std::ios::binary);
+  bmp_file.open("tests/" + this->image_file_name,
+                std::ios::app | std::ios::binary);
   if (!bmp_file.is_open()) {
     std::cout << "File could not be opened" << std::endl;
     return;
