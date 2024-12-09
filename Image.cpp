@@ -80,6 +80,7 @@ void BmpImage::read_bmp_file(void) {
     std::cout << "Not a BMP file. Will Exit." << std::endl;
     return;
   }
+  // TODO fix the file size
   uint32_t file_size = *(reinterpret_cast<int *>(bmp_temp + 2));
   uint32_t starting_offset = *(reinterpret_cast<int *>(bmp_temp + 10));
   // print BMP file header
