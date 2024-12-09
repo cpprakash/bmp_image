@@ -196,7 +196,7 @@ void BmpImage::write_dib_info_header(void) {
     dib_info_header.number_of_important_colors = 0;
     std::cout << "File is opened, will write the dib info header." << std::endl;
 
-    bmp_file.write((char *)&dib_info_header.header_size,
+    /*bmp_file.write((char *)&dib_info_header.header_size,
                    sizeof(dib_info_header.header_size));
     bmp_file.write((char *)&dib_info_header.bitmap_width_in_pixel,
                    sizeof(dib_info_header.bitmap_width_in_pixel));
@@ -217,14 +217,16 @@ void BmpImage::write_dib_info_header(void) {
     bmp_file.write((char *)&dib_info_header.number_of_colors_in_palette,
                    sizeof(dib_info_header.number_of_colors_in_palette));
     bmp_file.write((char *)&dib_info_header.number_of_important_colors,
-                   sizeof(dib_info_header.number_of_important_colors));
+                   sizeof(dib_info_header.number_of_important_colors));*/
+
+    bmp_file.write((char *)&dib_info_header, sizeof(dib_info_header));
 
     bmp_file.close();
   }
 }
 
 void BmpImage::write_single_pixel_color_data(void) noexcept {
-  std::ofstream bmp_file(this->image_file_name,
+  std::ofstream bmp_file("tests/" + this->image_file_name,
                          std::ios_base::binary | std::ios_base::app);
   if (!bmp_file) {
     std::cout << "Error opening file" << std::endl;
