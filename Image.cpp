@@ -196,29 +196,6 @@ void BmpImage::write_dib_info_header(void) {
     dib_info_header.number_of_important_colors = 0;
     std::cout << "File is opened, will write the dib info header." << std::endl;
 
-    /*bmp_file.write((char *)&dib_info_header.header_size,
-                   sizeof(dib_info_header.header_size));
-    bmp_file.write((char *)&dib_info_header.bitmap_width_in_pixel,
-                   sizeof(dib_info_header.bitmap_width_in_pixel));
-    bmp_file.write((char *)&dib_info_header.bitmap_height_in_pixel,
-                   sizeof(dib_info_header.bitmap_height_in_pixel));
-    bmp_file.write((char *)&dib_info_header.number_of_color_panes,
-                   sizeof(dib_info_header.number_of_color_panes));
-    bmp_file.write((char *)&dib_info_header.number_of_bits_per_pixel,
-                   sizeof(dib_info_header.number_of_bits_per_pixel));
-    bmp_file.write((char *)&dib_info_header.compression_method,
-                   sizeof(dib_info_header.compression_method));
-    bmp_file.write((char *)&dib_info_header.image_size,
-                   sizeof(dib_info_header.image_size));
-    bmp_file.write((char *)&dib_info_header.horizontal_resolution_of_image,
-                   sizeof(dib_info_header.horizontal_resolution_of_image));
-    bmp_file.write((char *)&dib_info_header.vertical_resolution_of_image,
-                   sizeof(dib_info_header.vertical_resolution_of_image));
-    bmp_file.write((char *)&dib_info_header.number_of_colors_in_palette,
-                   sizeof(dib_info_header.number_of_colors_in_palette));
-    bmp_file.write((char *)&dib_info_header.number_of_important_colors,
-                   sizeof(dib_info_header.number_of_important_colors));*/
-
     bmp_file.write((char *)&dib_info_header, sizeof(dib_info_header));
 
     bmp_file.close();
