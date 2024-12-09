@@ -31,6 +31,10 @@ void BmpImage::setup_initial_values(const std::string &file_name,
   this->IMG_WIDTH = img_width;
   this->IMG_HEIGHT = img_height;
   this->pixel_padding = this->get_padding_for_row();
+  std::cout << "The initial values are set for, file_name="
+            << this->image_file_name << " image width=" << this->IMG_WIDTH
+            << " image height=" << this->IMG_HEIGHT
+            << " pixel padding=" << this->pixel_padding << std::endl;
 }
 
 void BmpImage::start_reading_bmp_file(const std::string &file_name) noexcept {
@@ -269,6 +273,9 @@ void BmpImage::write_chess_pattern_data(void) noexcept {
         }
       }
     }
+
+    std::cout << "write_chess_pattern_data:: pixel data size="
+              << sizeof(pixel_data) << std::endl;
 
     bmp_file.write((char *)(&pixel_data), sizeof(pixel_data));
 
