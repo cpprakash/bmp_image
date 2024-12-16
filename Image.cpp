@@ -365,11 +365,45 @@ void read_bmp_file(void) {
   unsigned char bmp_temp[14];
   // std::cout << sizeof(unsigned short);
   bmp_file_input.read(reinterpret_cast<char *>(bmp_temp), sizeof(bmp_temp));
+
+  if (bmp_temp[0] == 'B' && bmp_temp[1] == 'A') { // OS-2 struct bitmap array
+    std::cout << "OS2 struct bitmap arrays are not supported at this moment. "
+                 "Will Exit."
+              << std::endl;
+    return;
+  } else if (bmp_temp[0] == 'C' &&
+             bmp_temp[1] == 'I') { // CI OS2 struct color icon
+    std::cout << "OS2 struct color icons are not supported at this moment. "
+                 "Will Exit."
+              << std::endl;
+    return;
+  } else if (bmp_temp[0] == 'C' &&
+             bmp_temp[1] == 'P') { // OS-2 const color pointer
+    std::cout << "OS2 const color pointers are not supported at this moment. "
+                 "Will Exit."
+              << std::endl;
+    return;
+  } else if (bmp_temp[0] == 'I' && bmp_temp[1] == 'C') { // OS-2 struct icon
+    std::cout << "OS2 struct icons are not supported at this moment. "
+                 "Will Exit."
+              << std::endl;
+    return;
+  }
+  if (bmp_temp[0] == 'P' && bmp_temp[1] == 'T') { // OS-2 poitner
+    std::cout << "OS2 pointers are not supported at this moment. "
+                 "Will Exit."
+              << std::endl;
+    return;
+  }
+
   // check the magic number to make sure it is BMP file
   if (bmp_temp[0] != 'B' && bmp_temp[1] != 'M') {
     std::cout << "Not a BMP file. Will Exit." << std::endl;
     return;
   }
+
+  std::cout << "A valid BMP file found. Will Continue." << std::endl;
+
   uint32_t file_size = *(reinterpret_cast<int *>(bmp_temp + 2));
   uint32_t starting_offset = *(reinterpret_cast<int *>(bmp_temp + 10));
   // print BMP file header
