@@ -100,6 +100,7 @@ private:
   uint32_t get_padding_for_row(void) noexcept;
   void write_single_pixel_color_data(void) noexcept;
   void write_chess_pattern_data(void) noexcept;
+  uint32_t calculate_pixel_data_size(void) noexcept;
   void setup_initial_values(const std::string &file_name,
                             const uint32_t &img_height,
                             const uint32_t &img_width) noexcept;

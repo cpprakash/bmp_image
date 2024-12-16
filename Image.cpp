@@ -22,6 +22,14 @@ void BmpImage::create_chess_pattern(const std::string &file_name,
   this->write_chess_pattern_data();
 }
 
+uint32_t BmpImage::calculate_pixel_data_size(void) noexcept {
+  std::cout << "calculate pixe data siue = "
+            << (((this->IMG_WIDTH * 3) + this->pixel_padding) *
+                this->IMG_HEIGHT)
+            << std::endl;
+  return (((this->IMG_WIDTH * 3) + this->pixel_padding) * this->IMG_HEIGHT);
+}
+
 // void BmpImage::write_chess_pattern_data(void) noexcept {}
 
 void BmpImage::setup_initial_values(const std::string &file_name,
@@ -31,10 +39,13 @@ void BmpImage::setup_initial_values(const std::string &file_name,
   this->IMG_WIDTH = img_width;
   this->IMG_HEIGHT = img_height;
   this->pixel_padding = this->get_padding_for_row();
+  // this->pixel_data.resize(this->calculate_pixel_data_size());
+  this->pixel_data.resize(192);
   std::cout << "The initial values are set for, file_name="
             << this->image_file_name << " image width=" << this->IMG_WIDTH
             << " image height=" << this->IMG_HEIGHT
-            << " pixel padding=" << this->pixel_padding << std::endl;
+            << " pixel padding=" << this->pixel_padding
+            << " pixel data size=" << sizeof(this->pixel_data) << std::endl;
 }
 
 void BmpImage::start_reading_bmp_file(const std::string &file_name) noexcept {
@@ -223,6 +234,8 @@ void BmpImage::write_chess_pattern_data(void) noexcept {
                "to the file"
             << std::endl;
   std::ofstream bmp_file;
+  unsigned char chess_pixel_data[(
+      (((this->IMG_WIDTH * 3) + this->pixel_padding) * this->IMG_HEIGHT))];
   bmp_file.open("tests/" + this->image_file_name,
                 std::ios::app | std::ios::binary);
   if (!bmp_file.is_open()) {
@@ -233,13 +246,24 @@ void BmpImage::write_chess_pattern_data(void) noexcept {
     std::cout << "write_chess_pattern_data::File is opened, will write the "
                  "color info."
               << std::endl;
-    for (uint32_t i = 0; i < IMG_HEIGHT; i++) {
-      for (uint32_t j = 0; j < IMG_WIDTH; j++) {
-        pixel_data.push_back(chess_color_palette[0][0]);
+    uint32_t counter{0};
+    for (uint32_t i = 0; i < this->IMG_HEIGHT; i++) {
+      for (uint32_t j = 0; j < this->IMG_WIDTH; j++) {
+        std::cout << "i = " << i << " j = " << j
+                  << " pixel_data size =" << sizeof(this->pixel_data)
+                  << " chess pixel_data size =" << sizeof(chess_pixel_data)
+                  << std::endl;
+        // this->pixel_data.push_back(chess_color_palette[0][0]);
+        chess_pixel_data[counter] = chess_color_palette[0][0];
+        counter++;
+        chess_pixel_data[counter] = chess_color_palette[0][1];
+        counter++;
+        chess_pixel_data[counter] = chess_color_palette[0][2];
+        counter++;
 
-        pixel_data.push_back(chess_color_palette[0][1]);
+        // this->pixel_data.push_back(chess_color_palette[0][1]);
 
-        pixel_data.push_back(chess_color_palette[0][2]);
+        // this->pixel_data.push_back(chess_color_palette[0][2]);
         // bmp_file.write((char *)&color_palette[(bit_pattern + 1) % 5],
         //              sizeof(color_palette[j]));
       }
@@ -247,16 +271,18 @@ void BmpImage::write_chess_pattern_data(void) noexcept {
       if (this->pixel_padding != 0) {
         for (uint32_t k = 0; k < this->pixel_padding; k++) {
 
-          pixel_data.push_back(padding_byte);
+          // this->pixel_data.push_back(padding_byte);
+          chess_pixel_data[counter] = padding_byte;
+          counter++;
           // bmp_file.write((char *)&padding_byte, 1);
         }
       }
     }
 
     std::cout << "write_chess_pattern_data:: pixel data size="
-              << sizeof(pixel_data) << std::endl;
+              << sizeof(this->pixel_data) << std::endl;
 
-    bmp_file.write((char *)(&pixel_data), sizeof(pixel_data));
+    bmp_file.write((char *)(&chess_pixel_data), sizeof(chess_pixel_data));
 
     bmp_file.close();
   }
