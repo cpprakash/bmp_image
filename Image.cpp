@@ -42,8 +42,8 @@ void BmpImage::setup_initial_values(const std::string &file_name,
   this->IMG_WIDTH = img_width;
   this->IMG_HEIGHT = img_height;
   this->pixel_padding = this->get_padding_for_row();
-  // this->pixel_data.resize(this->calculate_pixel_data_size());
-  this->pixel_data.resize(192);
+  this->pixel_data.resize(this->calculate_pixel_data_size());
+
   std::cout << "The initial values are set for, file_name="
             << this->image_file_name << " image width=" << this->IMG_WIDTH
             << " image height=" << this->IMG_HEIGHT
@@ -262,8 +262,7 @@ void BmpImage::write_chess_pattern_data(void) noexcept {
     for (uint32_t i = 0; i < this->IMG_HEIGHT; i++) {
       for (uint32_t j = 0; j < this->IMG_WIDTH; j++) {
         std::cout << "i = " << i << " j = " << j
-                  << " pixel_data size =" << sizeof(this->pixel_data)
-                  << " chess pixel_data size =" << sizeof(chess_pixel_data)
+                  << " chess_pixel_data size =" << sizeof(chess_pixel_data)
                   << std::endl;
         chess_pixel_data[counter] = chess_color_palette[current_color_index][0];
         counter++;
@@ -291,9 +290,6 @@ void BmpImage::write_chess_pattern_data(void) noexcept {
         current_color_index = 0;
       }
     }
-
-    std::cout << "write_chess_pattern_data:: pixel data size="
-              << sizeof(this->pixel_data) << std::endl;
 
     bmp_file.write((char *)(&chess_pixel_data), sizeof(chess_pixel_data));
 
@@ -327,6 +323,7 @@ void BmpImage::write_color_data(void) {
     std::cout << "File could not be opened" << std::endl;
     return;
   } else {
+
     std::cout << "File is opened, will write the color info." << std::endl;
     for (uint32_t i = 0; i < IMG_HEIGHT; i++) {
       for (uint32_t j = 0; j < IMG_WIDTH; j++) {
@@ -349,7 +346,7 @@ void BmpImage::write_color_data(void) {
         }
       }
     }
-
+    std::cout << "Size of pixel data = " << sizeof(pixel_data) << std::endl;
     bmp_file.write((char *)(&pixel_data), sizeof(pixel_data));
 
     bmp_file.close();
