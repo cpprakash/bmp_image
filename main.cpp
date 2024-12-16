@@ -109,5 +109,5 @@ void handle_choice_four(void) noexcept {
   BmpImage img;
   // TODO, fix me with proper values, for now we just make it fixed size
   // without user input,
-  img.create_chess_pattern(file_name, height = 8, width = 8, box_size = 1);
+  img.create_chess_pattern(file_name, 8, 8, 1);
 }

@@ -392,7 +392,7 @@ void read_bmp_file(void) {
 void BmpImage::write_default_image_data(void) noexcept {}
 
 uint32_t BmpImage::get_padding_for_row(void) noexcept {
-  return 4 - ((IMG_WIDTH * 3) % 4);
+  return (4 - ((IMG_WIDTH * 3) % 4)) % 4;
 }
 
 // void BmpImage::ReadFile(void) {}
