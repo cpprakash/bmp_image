@@ -88,7 +88,7 @@ void handle_choice_three(void) noexcept {
   std::cout << "Please enter a width of image" << std::endl;
   uint32_t width;
   std::cin >> width;
-  file_name += file_name + ".bmp";
+  file_name += ".bmp";
   BmpImage img(file_name, height, width);
 }
 
