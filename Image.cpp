@@ -39,8 +39,6 @@ void BmpImage::setup_initial_values(const std::string &file_name,
 
 void BmpImage::start_reading_bmp_file(const std::string &file_name) noexcept {
   this->image_file_name = file_name;
-  if (this->pixel_padding == 4)
-    this->pixel_padding = 0;
   this->read_bmp_file();
 }
 
@@ -142,7 +140,7 @@ void BmpImage::write_bmp_header(void) {
   std::cout << "Writing bmp header to the file" << std::endl;
   BMP_FILE_HEADER bmp_file_header;
   bmp_file_header.bmp_file_size =
-      14 + 40 + (IMG_WIDTH * 3 + pixel_padding) * IMG_HEIGHT;
+      14 + 40 + (this->IMG_WIDTH * 3 + this->pixel_padding) * this->IMG_HEIGHT;
   // 54; // total file size
   bmp_file_header.reserved1 = 0;
   bmp_file_header.reserved2 = 0;
@@ -190,7 +188,8 @@ void BmpImage::write_dib_info_header(void) {
   } else {
     dib_info_header.bitmap_height_in_pixel = IMG_HEIGHT;
     dib_info_header.bitmap_width_in_pixel = IMG_WIDTH;
-    dib_info_header.image_size = (IMG_WIDTH + pixel_padding) * IMG_HEIGHT;
+    dib_info_header.image_size =
+        (this->IMG_WIDTH + this->pixel_padding) * this->IMG_HEIGHT;
     dib_info_header.horizontal_resolution_of_image = 2835;
     dib_info_header.vertical_resolution_of_image = 2835;
     dib_info_header.number_of_colors_in_palette = 0;
@@ -245,8 +244,8 @@ void BmpImage::write_chess_pattern_data(void) noexcept {
         //              sizeof(color_palette[j]));
       }
       // add appropriate amount of padding
-      if (pixel_padding != 0) {
-        for (uint32_t k = 0; k < pixel_padding; k++) {
+      if (this->pixel_padding != 0) {
+        for (uint32_t k = 0; k < this->pixel_padding; k++) {
 
           pixel_data.push_back(padding_byte);
           // bmp_file.write((char *)&padding_byte, 1);
@@ -303,8 +302,8 @@ void BmpImage::write_color_data(void) {
       }
       bit_pattern++; // increment it again to get the pattern
       // add appropriate amount of padding
-      if (pixel_padding != 0) {
-        for (uint32_t k = 0; k < pixel_padding; k++) {
+      if (this->pixel_padding != 0) {
+        for (uint32_t k = 0; k < this->pixel_padding; k++) {
 
           pixel_data.push_back(padding_byte);
           // bmp_file.write((char *)&padding_byte, 1);
