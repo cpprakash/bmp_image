@@ -18,6 +18,10 @@
  *
  */
 class BmpImage {
+  /***
+   * TODO change variable types to make them same
+   * either use uint32_t or use unsigned int
+   */
 public:
   uint32_t IMG_WIDTH = 5;
   uint32_t IMG_HEIGHT = 5;
