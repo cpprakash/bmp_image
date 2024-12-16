@@ -2,6 +2,7 @@
 #define __HEADER__IMAGE__
 
 #include <array>
+#include <cstdint>
 #include <fstream>
 #include <iostream>
 #include <vector>

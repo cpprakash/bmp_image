@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "Image.hpp"
+#include <cstdint>
 
 void handle_choice_one(void) noexcept;   // Create a 1x1 BMP image file
 void handle_choice_two(void) noexcept;   // Read a BMP image file
