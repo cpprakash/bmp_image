@@ -422,10 +422,25 @@ void read_bmp_file(void) {
   complete_bmp_file.read(reinterpret_cast<char *>(bmp_file_array),
                          sizeof(bmp_file_array));
 
+  uint32_t bitmap_header_size =
+      *(reinterpret_cast<uint32_t *>(bmp_file_array + 14));
+
+  if (bitmap_header_size != 40) {
+    std::cout << "The windows header size is invalid. File is unreadable. Will "
+                 "exit now"
+              << std::endl;
+    return;
+  }
+  uint32_t compression_method =
+      *(reinterpret_cast<uint32_t *>(bmp_file_array + 30));
+  if (compression_method != 0) {
+    std::cout << "Compression is not supported as of now. Will "
+                 "exit now"
+              << std::endl;
+    return;
+  }
   /// Windows BITMAPINFOHEADER information
-  std::cout << "Size of this header ="
-            << *(reinterpret_cast<uint32_t *>(bmp_file_array + 14))
-            << std::endl;
+  std::cout << "Size of this header =" << bitmap_header_size << std::endl;
   std::cout << "Image width ="
             << *(reinterpret_cast<int32_t *>(bmp_file_array + 18)) << std::endl;
   std::cout << "Image height ="
@@ -436,9 +451,7 @@ void read_bmp_file(void) {
   std::cout << "Num of bits per pixel ="
             << *(reinterpret_cast<uint16_t *>(bmp_file_array + 28))
             << std::endl;
-  std::cout << "Compression method ="
-            << *(reinterpret_cast<uint32_t *>(bmp_file_array + 30))
-            << std::endl;
+  std::cout << "Compression method =" << compression_method << std::endl;
   std::cout << "Image size ="
             << *(reinterpret_cast<uint32_t *>(bmp_file_array + 34))
             << std::endl;
