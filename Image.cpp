@@ -225,6 +225,8 @@ void BmpImage::write_single_pixel_color_data(void) noexcept {
   bmp_file.close();
 }
 
+void flip_color_index(void) {}
+
 /** TODO, implement a clear function
  * Overloaded version of the write_Color_data
  * this overloaded function expects color as well
@@ -234,6 +236,7 @@ void BmpImage::write_chess_pattern_data(void) noexcept {
                "to the file"
             << std::endl;
   std::ofstream bmp_file;
+  uint32_t current_color_index{0};
   unsigned char chess_pixel_data[(
       (((this->IMG_WIDTH * 3) + this->pixel_padding) * this->IMG_HEIGHT))];
   bmp_file.open("tests/" + this->image_file_name,
@@ -254,12 +257,19 @@ void BmpImage::write_chess_pattern_data(void) noexcept {
                   << " chess pixel_data size =" << sizeof(chess_pixel_data)
                   << std::endl;
         // this->pixel_data.push_back(chess_color_palette[0][0]);
-        chess_pixel_data[counter] = chess_color_palette[0][0];
+
+        chess_pixel_data[counter] = chess_color_palette[current_color_index][0];
         counter++;
-        chess_pixel_data[counter] = chess_color_palette[0][1];
+        chess_pixel_data[counter] = chess_color_palette[current_color_index][1];
         counter++;
-        chess_pixel_data[counter] = chess_color_palette[0][2];
+        chess_pixel_data[counter] = chess_color_palette[current_color_index][2];
         counter++;
+
+        if (current_color_index == 0) {
+          current_color_index = 1;
+        } else if (current_color_index == 1) {
+          current_color_index = 0;
+        }
 
         // this->pixel_data.push_back(chess_color_palette[0][1]);
 
@@ -276,6 +286,11 @@ void BmpImage::write_chess_pattern_data(void) noexcept {
           counter++;
           // bmp_file.write((char *)&padding_byte, 1);
         }
+      }
+      if (current_color_index == 0) {
+        current_color_index = 1;
+      } else if (current_color_index == 1) {
+        current_color_index = 0;
       }
     }
 
@@ -420,4 +435,4 @@ uint32_t BmpImage::get_padding_for_row(void) noexcept {
   return (4 - ((IMG_WIDTH * 3) % 4)) % 4;
 }
 
-// void BmpImage::ReadFile(void) {}
+// void BmpImage::ReadFile(void) {}ile(void) {}
