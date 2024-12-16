@@ -11,6 +11,10 @@ BmpImage::BmpImage(const std::string &file_name, const uint32_t img_height,
   this->write_color_data();
 }
 
+/***
+ * creates the chess pattern
+ * TODO: make parameters possible by user and box size
+ */
 void BmpImage::create_chess_pattern(const std::string &file_name,
                                     const uint32_t &img_height,
                                     const uint32_t &img_width,
@@ -22,11 +26,10 @@ void BmpImage::create_chess_pattern(const std::string &file_name,
   this->write_chess_pattern_data();
 }
 
+/**
+ * returns the size of the pixel data
+ */
 uint32_t BmpImage::calculate_pixel_data_size(void) noexcept {
-  std::cout << "calculate pixe data siue = "
-            << (((this->IMG_WIDTH * 3) + this->pixel_padding) *
-                this->IMG_HEIGHT)
-            << std::endl;
   return (((this->IMG_WIDTH * 3) + this->pixel_padding) * this->IMG_HEIGHT);
 }
 
