@@ -150,8 +150,8 @@ void BmpImage::read_bmp_file(void) {
 void BmpImage::write_bmp_header(void) {
   std::cout << "Writing bmp header to the file" << std::endl;
   BMP_FILE_HEADER bmp_file_header;
-  bmp_file_header.bmp_file_size =
-      14 + 40 + (this->IMG_WIDTH * 3 + this->pixel_padding) * this->IMG_HEIGHT;
+  bmp_file_header.bmp_file_size = 14 + 40 + calculate_pixel_data_size();
+  //(this->IMG_WIDTH * 3 + this->pixel_padding) *  this->IMG_HEIGHT;
   // 54; // total file size
   bmp_file_header.reserved1 = 0;
   bmp_file_header.reserved2 = 0;
@@ -197,8 +197,8 @@ void BmpImage::write_dib_info_header(void) {
     std::cout << "File could not be opened" << std::endl;
     return;
   } else {
-    dib_info_header.bitmap_height_in_pixel = IMG_HEIGHT;
-    dib_info_header.bitmap_width_in_pixel = IMG_WIDTH;
+    dib_info_header.bitmap_height_in_pixel = this->IMG_HEIGHT;
+    dib_info_header.bitmap_width_in_pixel = this->IMG_WIDTH;
     dib_info_header.image_size =
         (this->IMG_WIDTH + this->pixel_padding) * this->IMG_HEIGHT;
     dib_info_header.horizontal_resolution_of_image = 2835;
@@ -225,7 +225,13 @@ void BmpImage::write_single_pixel_color_data(void) noexcept {
   bmp_file.close();
 }
 
-void flip_color_index(void) {}
+uint32_t flip_color_index(uint32_t &index) {
+  if (index == 0) {
+    index = 1;
+  }
+  index = 0;
+  return index;
+}
 
 /** TODO, implement a clear function
  * Overloaded version of the write_Color_data
