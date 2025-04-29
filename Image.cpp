@@ -2,8 +2,8 @@
 
 BmpImage::BmpImage() {}
 
-BmpImage::BmpImage(const std::string &file_name, const uint32_t img_height,
-                   const uint32_t img_width) noexcept {
+BmpImage::BmpImage(const std::string &file_name, const unsigned int img_height,
+                   const unsigned int img_width) noexcept {
   this->setup_initial_values(file_name, img_height, img_width);
   // this->write_default_image_data();
   this->write_bmp_header();
@@ -16,9 +16,9 @@ BmpImage::BmpImage(const std::string &file_name, const uint32_t img_height,
  * TODO: make parameters possible by user and box size
  */
 void BmpImage::create_chess_pattern(const std::string &file_name,
-                                    const uint32_t &img_height,
-                                    const uint32_t &img_width,
-                                    const uint32_t &box_size) noexcept {
+                                    const unsigned int &img_height,
+                                    const unsigned int &img_width,
+                                    const unsigned int &box_size) noexcept {
   this->setup_initial_values(file_name, img_height, img_width);
   this->box_size = box_size;
   this->write_bmp_header();
@@ -29,15 +29,15 @@ void BmpImage::create_chess_pattern(const std::string &file_name,
 /**
  * returns the size of the pixel data
  */
-uint32_t BmpImage::calculate_pixel_data_size(void) noexcept {
+unsigned int BmpImage::calculate_pixel_data_size(void) noexcept {
   return (((this->IMG_WIDTH * 3) + this->pixel_padding) * this->IMG_HEIGHT);
 }
 
 // void BmpImage::write_chess_pattern_data(void) noexcept {}
 
 void BmpImage::setup_initial_values(const std::string &file_name,
-                                    const uint32_t &img_height,
-                                    const uint32_t &img_width) noexcept {
+                                    const unsigned int &img_height,
+                                    const unsigned int &img_width) noexcept {
   this->image_file_name = file_name;
   this->IMG_WIDTH = img_width;
   this->IMG_HEIGHT = img_height;
@@ -93,8 +93,8 @@ void BmpImage::read_bmp_file(void) {
     return;
   }
   // TODO fix the file size
-  uint32_t file_size = *(reinterpret_cast<int *>(bmp_temp + 2));
-  uint32_t starting_offset = *(reinterpret_cast<int *>(bmp_temp + 10));
+  unsigned int file_size = *(reinterpret_cast<int *>(bmp_temp + 2));
+  unsigned int starting_offset = *(reinterpret_cast<int *>(bmp_temp + 10));
   // print BMP file header
   std::cout << "Magic Number =" << bmp_temp[0] << "" << bmp_temp[1]
             << std::endl;
@@ -115,35 +115,35 @@ void BmpImage::read_bmp_file(void) {
 
   /// Windows BITMAPINFOHEADER information
   std::cout << "Size of this header ="
-            << *(reinterpret_cast<uint32_t *>(bmp_file_array + 14))
+            << *(reinterpret_cast<unsigned int *>(bmp_file_array + 14))
             << std::endl;
   std::cout << "Image width ="
             << *(reinterpret_cast<int32_t *>(bmp_file_array + 18)) << std::endl;
   std::cout << "Image height ="
             << *(reinterpret_cast<int32_t *>(bmp_file_array + 22)) << std::endl;
   std::cout << "Num of Color planes ="
-            << *(reinterpret_cast<uint16_t *>(bmp_file_array + 26))
+            << *(reinterpret_cast<unsigned short *>(bmp_file_array + 26))
             << std::endl;
   std::cout << "Num of bits per pixel ="
-            << *(reinterpret_cast<uint16_t *>(bmp_file_array + 28))
+            << *(reinterpret_cast<unsigned short *>(bmp_file_array + 28))
             << std::endl;
   std::cout << "Compression method ="
-            << *(reinterpret_cast<uint32_t *>(bmp_file_array + 30))
+            << *(reinterpret_cast<unsigned int *>(bmp_file_array + 30))
             << std::endl;
   std::cout << "Image size ="
-            << *(reinterpret_cast<uint32_t *>(bmp_file_array + 34))
+            << *(reinterpret_cast<unsigned int *>(bmp_file_array + 34))
             << std::endl;
   std::cout << "Horizntal Resolution ="
-            << *(reinterpret_cast<uint32_t *>(bmp_file_array + 38))
+            << *(reinterpret_cast<unsigned int *>(bmp_file_array + 38))
             << std::endl;
   std::cout << "Vertical Resolution ="
-            << *(reinterpret_cast<uint32_t *>(bmp_file_array + 42))
+            << *(reinterpret_cast<unsigned int *>(bmp_file_array + 42))
             << std::endl;
   std::cout << "Num of colors in color palette ="
-            << *(reinterpret_cast<uint32_t *>(bmp_file_array + 46))
+            << *(reinterpret_cast<unsigned int *>(bmp_file_array + 46))
             << std::endl;
   std::cout << "Num of imp colors used ="
-            << *(reinterpret_cast<uint32_t *>(bmp_file_array + 50))
+            << *(reinterpret_cast<unsigned int *>(bmp_file_array + 50))
             << std::endl;
 }
 /***
@@ -228,7 +228,7 @@ void BmpImage::write_single_pixel_color_data(void) noexcept {
   bmp_file.close();
 }
 
-uint32_t flip_color_index(uint32_t &index) {
+unsigned int flip_color_index(unsigned int &index) {
   if (index == 0) {
     index = 1;
   }
@@ -245,7 +245,7 @@ void BmpImage::write_chess_pattern_data(void) noexcept {
                "to the file"
             << std::endl;
   std::ofstream bmp_file;
-  uint32_t current_color_index{0};
+  unsigned int current_color_index{0};
   unsigned char chess_pixel_data[(
       (((this->IMG_WIDTH * 3) + this->pixel_padding) * this->IMG_HEIGHT))];
   bmp_file.open("tests/" + this->image_file_name,
@@ -258,9 +258,9 @@ void BmpImage::write_chess_pattern_data(void) noexcept {
     std::cout << "write_chess_pattern_data::File is opened, will write the "
                  "color info."
               << std::endl;
-    uint32_t counter{0};
-    for (uint32_t i = 0; i < this->IMG_HEIGHT; i++) {
-      for (uint32_t j = 0; j < this->IMG_WIDTH; j++) {
+    unsigned int counter{0};
+    for (unsigned int i = 0; i < this->IMG_HEIGHT; i++) {
+      for (unsigned int j = 0; j < this->IMG_WIDTH; j++) {
         std::cout << "i = " << i << " j = " << j
                   << " chess_pixel_data size =" << sizeof(chess_pixel_data)
                   << std::endl;
@@ -279,7 +279,7 @@ void BmpImage::write_chess_pattern_data(void) noexcept {
       }
       // add appropriate amount of padding
       if (this->pixel_padding != 0) {
-        for (uint32_t k = 0; k < this->pixel_padding; k++) {
+        for (unsigned int k = 0; k < this->pixel_padding; k++) {
           chess_pixel_data[counter] = padding_byte;
           counter++;
         }
@@ -317,6 +317,7 @@ void BmpImage::write_color_data(void) {
   std::cout << "Writing color data to the file" << std::endl;
   std::ofstream bmp_file;
   unsigned char bit_pattern = 0;
+  std::vector<unsigned char> color_arr[this->calculate_pixel_data_size()];
   bmp_file.open("tests/" + this->image_file_name,
                 std::ios::app | std::ios::binary);
   if (!bmp_file.is_open()) {
@@ -325,155 +326,34 @@ void BmpImage::write_color_data(void) {
   } else {
 
     std::cout << "File is opened, will write the color info." << std::endl;
-    for (uint32_t i = 0; i < IMG_HEIGHT; i++) {
-      for (uint32_t j = 0; j < IMG_WIDTH; j++) {
+    for (unsigned int i = 0; i < IMG_HEIGHT; i++) {
+      for (unsigned int j = 0; j < IMG_WIDTH; j++) {
         bit_pattern++;
-        pixel_data.push_back(color_palette[(bit_pattern + 1) % 5][0]);
+        color_arr->push_back(color_palette[(bit_pattern + 1) % 5][0]);
 
-        pixel_data.push_back(color_palette[(bit_pattern + 1) % 5][1]);
+        // color_arr->push_back(color_palette[(bit_pattern + 1) % 5][1]);
 
-        pixel_data.push_back(color_palette[(bit_pattern + 1) % 5][2]);
-        // bmp_file.write((char *)&color_palette[(bit_pattern + 1) % 5],
-        //              sizeof(color_palette[j]));
+        // color_arr->push_back(color_palette[(bit_pattern + 1) % 5][2]);
       }
       bit_pattern++; // increment it again to get the pattern
       // add appropriate amount of padding
       if (this->pixel_padding != 0) {
-        for (uint32_t k = 0; k < this->pixel_padding; k++) {
-
-          pixel_data.push_back(padding_byte);
-          // bmp_file.write((char *)&padding_byte, 1);
+        for (unsigned int k = 0; k < this->pixel_padding; k++) {
+          color_arr->push_back(padding_byte);
         }
       }
     }
-    std::cout << "Size of pixel data = " << sizeof(pixel_data) << std::endl;
-    bmp_file.write((char *)(&pixel_data), sizeof(pixel_data));
+    std::cout << "Size of pixel data = " << sizeof(color_arr) << std::endl;
+    bmp_file.write((char *)(&color_arr), sizeof(color_arr));
 
     bmp_file.close();
   }
-}
-
-void read_bmp_file(void) {
-  std::ifstream bmp_file_input;
-  bmp_file_input.open("demo.bmp", std::ios::binary | std::ios::in);
-  // file could not be opened or file doesnt exists
-  if (!bmp_file_input) {
-    std::cout << "Could not open the file." << std::endl;
-    return;
-  }
-  // create a variable to hold bmp file data
-  unsigned char bmp_temp[14];
-  // std::cout << sizeof(unsigned short);
-  bmp_file_input.read(reinterpret_cast<char *>(bmp_temp), sizeof(bmp_temp));
-
-  if (bmp_temp[0] == 'B' && bmp_temp[1] == 'A') { // OS-2 struct bitmap array
-    std::cout << "OS2 struct bitmap arrays are not supported at this moment. "
-                 "Will Exit."
-              << std::endl;
-    return;
-  } else if (bmp_temp[0] == 'C' &&
-             bmp_temp[1] == 'I') { // CI OS2 struct color icon
-    std::cout << "OS2 struct color icons are not supported at this moment. "
-                 "Will Exit."
-              << std::endl;
-    return;
-  } else if (bmp_temp[0] == 'C' &&
-             bmp_temp[1] == 'P') { // OS-2 const color pointer
-    std::cout << "OS2 const color pointers are not supported at this moment. "
-                 "Will Exit."
-              << std::endl;
-    return;
-  } else if (bmp_temp[0] == 'I' && bmp_temp[1] == 'C') { // OS-2 struct icon
-    std::cout << "OS2 struct icons are not supported at this moment. "
-                 "Will Exit."
-              << std::endl;
-    return;
-  }
-  if (bmp_temp[0] == 'P' && bmp_temp[1] == 'T') { // OS-2 poitner
-    std::cout << "OS2 pointers are not supported at this moment. "
-                 "Will Exit."
-              << std::endl;
-    return;
-  }
-
-  // check the magic number to make sure it is BMP file
-  if (bmp_temp[0] != 'B' && bmp_temp[1] != 'M') {
-    std::cout << "Not a BMP file. Will Exit." << std::endl;
-    return;
-  }
-
-  std::cout << "A valid BMP file found. Will Continue." << std::endl;
-
-  uint32_t file_size = *(reinterpret_cast<int *>(bmp_temp + 2));
-  uint32_t starting_offset = *(reinterpret_cast<int *>(bmp_temp + 10));
-  // print BMP file header
-  std::cout << "Magic Number =" << bmp_temp[0] << "" << bmp_temp[1]
-            << std::endl;
-  std::cout << "File size =" << file_size << " bytes." << std::endl;
-  std::cout << "File offset to pixel array =" << (starting_offset) << " bytes."
-            << std::endl;
-  bmp_file_input.close();
-
-  std::ifstream complete_bmp_file;
-  complete_bmp_file.open("demo.bmp", std::ios::binary | std::ios::in);
-  if (!complete_bmp_file)
-    return; // TODO handle with grace here later
-  unsigned char bmp_file_array[file_size];
-  complete_bmp_file.read(reinterpret_cast<char *>(bmp_file_array),
-                         sizeof(bmp_file_array));
-
-  uint32_t bitmap_header_size =
-      *(reinterpret_cast<uint32_t *>(bmp_file_array + 14));
-
-  if (bitmap_header_size != 40) {
-    std::cout << "The windows header size is invalid. File is unreadable. Will "
-                 "exit now"
-              << std::endl;
-    return;
-  }
-  uint32_t compression_method =
-      *(reinterpret_cast<uint32_t *>(bmp_file_array + 30));
-  if (compression_method != 0) {
-    std::cout << "Compression is not supported as of now. Will "
-                 "exit now"
-              << std::endl;
-    return;
-  }
-  /// Windows BITMAPINFOHEADER information
-  std::cout << "Size of this header =" << bitmap_header_size << std::endl;
-  std::cout << "Image width ="
-            << *(reinterpret_cast<int32_t *>(bmp_file_array + 18)) << std::endl;
-  std::cout << "Image height ="
-            << *(reinterpret_cast<int32_t *>(bmp_file_array + 22)) << std::endl;
-  std::cout << "Num of Color planes ="
-            << *(reinterpret_cast<uint16_t *>(bmp_file_array + 26))
-            << std::endl;
-  std::cout << "Num of bits per pixel ="
-            << *(reinterpret_cast<uint16_t *>(bmp_file_array + 28))
-            << std::endl;
-  std::cout << "Compression method =" << compression_method << std::endl;
-  std::cout << "Image size ="
-            << *(reinterpret_cast<uint32_t *>(bmp_file_array + 34))
-            << std::endl;
-  std::cout << "Horizntal Resolution ="
-            << *(reinterpret_cast<uint32_t *>(bmp_file_array + 38))
-            << std::endl;
-  std::cout << "Vertical Resolution ="
-            << *(reinterpret_cast<uint32_t *>(bmp_file_array + 42))
-            << std::endl;
-  std::cout << "Num of colors in color palette ="
-            << *(reinterpret_cast<uint32_t *>(bmp_file_array + 46))
-            << std::endl;
-  std::cout << "Num of imp colors used ="
-            << *(reinterpret_cast<uint32_t *>(bmp_file_array + 50))
-            << std::endl;
-
-  complete_bmp_file.close();
+  std::cout << "write_color_data ended." << std::endl;
 }
 
 void BmpImage::write_default_image_data(void) noexcept {}
 
-uint32_t BmpImage::get_padding_for_row(void) noexcept {
+unsigned int BmpImage::get_padding_for_row(void) noexcept {
   return (4 - ((IMG_WIDTH * 3) % 4)) % 4;
 }
 

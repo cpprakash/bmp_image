@@ -29,8 +29,6 @@ void create_menu(void) {
   uint32_t choice;
   std::cin >> choice;
   std::cout << "You have entered " << choice << std::endl;
-  // while (true) {
-  /* code */
   switch (choice) {
   case 1:
     handle_choice_one();
@@ -52,7 +50,6 @@ void create_menu(void) {
     std::cout << "Exiting for no reason " << choice << std::endl;
     break;
   }
-  //}
 }
 
 int main(void) {
